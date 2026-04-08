@@ -194,6 +194,24 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send certificate rejection email", description = "Send certificate rejection email with rejection reason and fix link")
+    public boolean sendCertificateRejectionToUser(Long userId, String applicationId, String certType, String companyName, String companyRegNo, String rejectionReason, String fixLink) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendCertificateRejectionEmail(
+                user.getEmail(),
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo,
+                rejectionReason,
+                fixLink
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

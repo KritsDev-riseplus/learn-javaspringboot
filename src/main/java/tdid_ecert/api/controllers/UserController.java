@@ -204,4 +204,35 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/cert-rejection-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send certificate rejection email", description = "Send certificate rejection email with rejection reason and fix link (Admin only)")
+    public ResponseEntity<Map<String, String>> sendCertificateRejectionEmail(@PathVariable Long id) {
+        // Generate mock application data matching the rejection email format
+        String applicationId = "NEW-06-O191-3-1-25-" + (5000000 + id);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = "บริษัท ไทยดิจิทัล ไอดี จำกัด";
+        String companyRegNo = "0105543112679";
+        String rejectionReason = "<เหตุผล Reject จาก Web RA>";
+        String fixLink = "https://thaidigitalid.com/e-cert/enterprise/reject/application-info";
+
+        boolean sent = userService.sendCertificateRejectionToUser(
+                id, applicationId, certType, companyName, companyRegNo,
+                rejectionReason, fixLink
+        );
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมลไม่อนุมัติใบรับรองอิเล็กทรอนิกส์ส่งสำเร็จ!",
+                "applicationId", applicationId
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "applicationId", applicationId
+            ));
+        }
+    }
 }
