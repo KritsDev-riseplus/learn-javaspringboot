@@ -207,4 +207,43 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send signature status notification email
+     */
+    public boolean sendSignatureStatusNotification(String to, String recipientEmail, String applicationId, String certType, String companyName, String companyRegNo, String signatureStatus, java.util.List<String> signers) {
+        try {
+            Context context = new Context();
+            context.setVariable("recipientEmail", recipientEmail);
+            context.setVariable("applicationId", applicationId);
+            context.setVariable("certType", certType);
+            context.setVariable("companyName", companyName);
+            context.setVariable("companyRegNo", companyRegNo);
+            context.setVariable("signatureStatus", signatureStatus);
+            context.setVariable("signers", signers);
+
+            String subject = "TDID : แจ้งสถานะการลงนามขอใบรับรองอิเล็กทรอนิกส์ – Application ID " + applicationId;
+            String htmlContent = templateEngine.process("email/signature-status-notification", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Signature status notification email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send signature status notification to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }

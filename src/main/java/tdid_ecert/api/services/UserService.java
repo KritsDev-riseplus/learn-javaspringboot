@@ -129,6 +129,35 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send signature status notification email", description = "Send notification about signature signing status")
+    public boolean sendSignatureStatusNotificationToUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Generate mock application data
+        String applicationId = "NEW-06-O" + System.currentTimeMillis() % 1000 + "-3-1-25-" + (userId + 5000000);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = user.getFullName() != null ? user.getFullName() : "บริษัท ตัวอย่าง จำกัด";
+        String companyRegNo = "0105543" + (userId + 1000);
+        String signatureStatus = "0 จาก 3 ราย";
+        java.util.List<String> signers = java.util.List.of(
+            "นายสมชาย เก่งมาก (รอลงนาม)",
+            "นางสาวสมหญิง สวยใส (รอลงนาม)",
+            "นายสมศักดิ์ ชำนาญลาด (รอลงนาม)"
+        );
+
+        return emailService.sendSignatureStatusNotification(
+                user.getEmail(),
+                user.getEmail(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo,
+                signatureStatus,
+                signers
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

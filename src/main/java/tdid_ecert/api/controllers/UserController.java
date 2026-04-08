@@ -129,4 +129,19 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/signature-status-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send signature status notification email", description = "Send notification about signature signing status (Admin only)")
+    public ResponseEntity<Map<String, String>> sendSignatureStatusEmail(@PathVariable Long id) {
+        boolean sent = userService.sendSignatureStatusNotificationToUser(id);
+        if (sent) {
+            return ResponseEntity.ok(Map.of("message", "Signature status notification email sent successfully"));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending"
+            ));
+        }
+    }
 }
