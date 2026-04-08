@@ -114,4 +114,19 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/application-confirmation-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send application confirmation email", description = "Send confirmation email for application signing (Admin only)")
+    public ResponseEntity<Map<String, String>> sendApplicationConfirmationEmail(@PathVariable Long id) {
+        boolean sent = userService.sendApplicationConfirmationToUser(id);
+        if (sent) {
+            return ResponseEntity.ok(Map.of("message", "Application confirmation email sent successfully"));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending"
+            ));
+        }
+    }
 }

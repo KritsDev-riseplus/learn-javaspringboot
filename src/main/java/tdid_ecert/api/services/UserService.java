@@ -106,6 +106,29 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send application confirmation email", description = "Send confirmation email for application signing")
+    public boolean sendApplicationConfirmationToUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Generate mock application data
+        String applicationId = "NEW-06-O" + System.currentTimeMillis() % 1000 + "-3-1-25-" + (userId + 5000000);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = user.getFullName() != null ? user.getFullName() : "บริษัท ตัวอย่าง จำกัด";
+        String companyRegNo = "0105543" + (userId + 1000);
+        String verifyLink = "https://thaidigitalid.com/ent-e-cert&No=PLacWddUgCVfmU09aWLT0991Sn-Ax65glr";
+
+        return emailService.sendApplicationConfirmationEmail(
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo,
+                verifyLink
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
