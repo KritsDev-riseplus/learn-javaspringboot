@@ -144,4 +144,25 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/signing-completed-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send signing completed notification email", description = "Send notification that signing is completed (Admin only)")
+    public ResponseEntity<Map<String, String>> sendSigningCompletedEmail(@PathVariable Long id) {
+        // Generate mock application data
+        String applicationId = "NEW-06-O" + System.currentTimeMillis() % 1000 + "-3-1-25-" + (id + 5000000);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = "บริษัท ตัวอย่าง จำกัด";
+        String companyRegNo = "0105543" + (id + 1000);
+
+        boolean sent = userService.sendSigningCompletedNotificationToUser(id, applicationId, certType, companyName, companyRegNo);
+        if (sent) {
+            return ResponseEntity.ok(Map.of("message", "Signing completed email sent successfully"));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending"
+            ));
+        }
+    }
 }

@@ -158,6 +158,22 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send signing completed notification email", description = "Send notification that signing is completed")
+    public boolean sendSigningCompletedNotificationToUser(Long userId, String applicationId, String certType, String companyName, String companyRegNo) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendSigningCompletedEmail(
+                user.getEmail(),
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
