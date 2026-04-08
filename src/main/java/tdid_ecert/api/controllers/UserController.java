@@ -165,4 +165,43 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/cert-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send certificate completion email", description = "Send certificate completion email with auth code, validity dates and login link (Admin only)")
+    public ResponseEntity<Map<String, String>> sendCertificateEmail(@PathVariable Long id) {
+        // Generate mock application data matching the email format
+        String applicationId = "NEW-06-O191-3-1-25-" + (5000000 + id);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = "บริษัท ไทยดิจิทัล ไอดี จำกัด";
+        String companyRegNo = "0105543112679";
+        String authCode = "TD" + System.currentTimeMillis() % 1000000000L + "DMNK" + (2000 + id);
+
+        // Valid for 60 days from now
+        java.time.LocalDate validFrom = java.time.LocalDate.now();
+        java.time.LocalDate validTo = validFrom.plusDays(60);
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy", java.util.Locale.ENGLISH);
+
+        String loginLink = "https://thaidigitalid.com/e-cert/auth/login";
+
+        boolean sent = userService.sendCertificateCompletionToUser(
+                id, applicationId, certType, companyName, companyRegNo,
+                authCode, validFrom.format(dateFormatter), validTo.format(dateFormatter), loginLink
+        );
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "ใบรับรองอิเล็กทรอนิกส์ส่งสำเร็จ!",
+                "applicationId", applicationId,
+                "authCode", authCode
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "applicationId", applicationId,
+                "authCode", authCode
+            ));
+        }
+    }
 }

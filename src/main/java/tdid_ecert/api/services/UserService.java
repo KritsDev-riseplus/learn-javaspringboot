@@ -174,6 +174,26 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send certificate completion email", description = "Send certificate completion email with auth code and login link")
+    public boolean sendCertificateCompletionToUser(Long userId, String applicationId, String certType, String companyName, String companyRegNo, String authCode, String validFrom, String validTo, String loginLink) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendCertificateCompletionEmail(
+                user.getEmail(),
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo,
+                authCode,
+                validFrom,
+                validTo,
+                loginLink
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

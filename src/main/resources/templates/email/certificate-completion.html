@@ -1,0 +1,159 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      font-family: Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000000;
+    "
+  >
+    <div class="container" style="max-width: 800px; margin: 0 auto">
+      <div class="content">
+        <div style="margin-bottom: 25px">
+          <p style="margin: 0; font-weight: bold">
+            ขณะนี้ผู้มีอำนาจลงนามได้ลงนามในคำขอใบรับรองอิเล็กทรอนิกส์
+            ครบถ้วนเรียบร้อยแล้ว
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <p style="margin: 0">
+            ท่านสามารถเข้าสู่ระบบโดยใช้ หมายเลขคำขอใบรับรองอิเล็กทรอนิกส์
+            (Application ID)
+            เพื่อดำเนินการรับใบรับรองอิเล็กทรอนิกส์ตามรายละเอียดด้านล่างนี้:
+          </p>
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <p style="margin: 0 0 6px 0">
+            Application ID :
+            <span th:text="${applicationId}">NEW-06-O191-3-1-25-5000001</span>
+          </p>
+          <p style="margin: 0 0 6px 0">
+            ประเภทใบรับรองอิเล็กทรอนิกส์ :
+            <span th:text="${certType}"
+              >นิติบุคคล (Enterprise Certificate)</span
+            >
+          </p>
+          <p style="margin: 0 0 6px 0">
+            ชื่อนิติบุคคล :
+            <span th:text="${companyName}">บริษัท ไทยดิจิทัล ไอดี จำกัด</span>
+          </p>
+          <p style="margin: 0">
+            หมายเลขทำเบียนนิติบุคคล :
+            <span th:text="${companyRegNo}">0105543112679</span>
+          </p>
+        </div>
+
+        <div style="margin-bottom: 20px">
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 16px;
+              font-family: Helvetica, sans-serif;
+            "
+          >
+            <tr>
+              <td
+                style="
+                  border: 1px solid #b3b3b3;
+                  padding: 12px 16px;
+                  font-weight: bold;
+                  width: 55%;
+                "
+              >
+                หมายเลขคำขอใบรับรองอิเล็กทรอนิกส์ (Application ID)
+              </td>
+              <td style="border: 1px solid #b3b3b3; padding: 12px 16px">
+                <span th:text="${applicationId}"
+                  >NEW-06-O191-3-1-25-5000001</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: 1px solid #b3b3b3;
+                  padding: 12px 16px;
+                  font-weight: bold;
+                "
+              >
+                รหัสอนุมัติ (Authorization Code)
+              </td>
+              <td style="border: 1px solid #b3b3b3; padding: 12px 16px">
+                <span th:text="${authCode}">TD2451528DMNK2515</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <p style="margin: 0">
+            หมายเหตุ : รหัสอนุมัติ (Authorization Code) มีอายุการใช้งาน 60 วัน
+            สามารถใช้งานได้ในระหว่างวันที่
+            <span th:text="${validFrom}">14 Jan 2026</span> -
+            <span th:text="${validTo}">15 Mar 2026</span> เท่านั้น
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <p style="margin: 0 0 6px 0">
+            กรุณาเข้าสู่ระบบเพื่อรับใบรับรองอิเล็กทรอนิกส์ด้วย
+          </p>
+          <p style="margin: 0">
+            ที่เว็บไซต์
+            <a
+              th:href="${loginLink}"
+              style="
+                color: #3366cc;
+                text-decoration: none;
+                word-break: break-all;
+              "
+              >https://thaidigitalid.com/e-cert/auth/login</a
+            >
+          </p>
+        </div>
+
+        <div style="margin-bottom: 30px">
+          <p style="margin: 0">
+            หากมีข้อสอบถามเพิ่มเติม กรุณาติดต่อหน่วยงานรับลงทะเบียนได้ที่
+            <a
+              href="mailto:customersupport@thaidigitalid.com"
+              style="color: #000000; text-decoration: none"
+              >customersupport@thaidigitalid.com</a
+            >
+          </p>
+        </div>
+
+        <div style="margin-bottom: 40px">
+          <p style="margin: 0">
+            หมายเหตุ : อีเมลนี้ถูกส่งด้วยระบบอัตโนมัติ กรุณาอย่าตอบกลับ
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <p style="margin: 0 0 4px 0">ขอแสดงความนับถือ</p>
+          <p style="margin: 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+        </div>
+
+        <div style="margin-top: 30px">
+          <img
+            src="cid:logo"
+            alt="TDID Logo"
+            style="width: 140px; height: auto; display: block"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

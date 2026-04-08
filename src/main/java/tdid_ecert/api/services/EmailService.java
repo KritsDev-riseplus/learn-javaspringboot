@@ -284,4 +284,47 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send certificate completion email (ใบรับรองอิเล็กทรอนิกส์ เสร็จสิ้น)
+     * Format: TDID : รายการคำขอใบรับรองอิเล็กทรอนิกส์ (เสร็จสิ้น)
+     */
+    public boolean sendCertificateCompletionEmail(String to, String recipientEmail, String recipientName, String applicationId, String certType, String companyName, String companyRegNo, String authCode, String validFrom, String validTo, String loginLink) {
+        try {
+            Context context = new Context();
+            context.setVariable("recipientEmail", recipientEmail);
+            context.setVariable("recipientName", recipientName);
+            context.setVariable("applicationId", applicationId);
+            context.setVariable("certType", certType);
+            context.setVariable("companyName", companyName);
+            context.setVariable("companyRegNo", companyRegNo);
+            context.setVariable("authCode", authCode);
+            context.setVariable("validFrom", validFrom);
+            context.setVariable("validTo", validTo);
+            context.setVariable("loginLink", loginLink);
+
+            String subject = "TDID : รายการคำขอใบรับรองอิเล็กทรอนิกส์ (เสร็จสิ้น) – Application ID " + applicationId;
+            String htmlContent = templateEngine.process("email/certificate-completion", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Certificate completion email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send certificate completion email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }
