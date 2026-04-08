@@ -85,6 +85,27 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send application review notification email", description = "Send notification about new application for review")
+    public boolean sendApplicationReviewNotificationToUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Generate mock application data
+        String applicationId = "NEW-06-O" + System.currentTimeMillis() % 1000 + "-3-1-25-" + (userId + 5000000);
+        String certType = "นิติบุคคล (Enterprise Certificate)";
+        String companyName = user.getFullName() != null ? user.getFullName() : "บริษัท ตัวอย่าง จำกัด";
+        String companyRegNo = "0105543" + (userId + 1000);
+
+        return emailService.sendApplicationReviewNotification(
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                certType,
+                companyName,
+                companyRegNo
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

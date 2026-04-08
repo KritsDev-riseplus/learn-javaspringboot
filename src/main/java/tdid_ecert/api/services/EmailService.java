@@ -131,4 +131,41 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send application review notification email
+     */
+    public boolean sendApplicationReviewNotification(String to, String recipientName, String applicationId, String certType, String companyName, String companyRegNo) {
+        try {
+            Context context = new Context();
+            context.setVariable("recipientEmail", to);
+            context.setVariable("applicationId", applicationId);
+            context.setVariable("certType", certType);
+            context.setVariable("companyName", companyName);
+            context.setVariable("companyRegNo", companyRegNo);
+
+            String subject = "TDID : คำขอใหม่รอการตรวจสอบและอนุมัติ – Application ID " + applicationId;
+            String htmlContent = templateEngine.process("email/application-review", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Application review email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send application review email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }

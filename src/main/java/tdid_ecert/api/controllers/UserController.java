@@ -99,4 +99,19 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/application-review-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send application review email", description = "Send notification about new application for review (Admin only)")
+    public ResponseEntity<Map<String, String>> sendApplicationReviewEmail(@PathVariable Long id) {
+        boolean sent = userService.sendApplicationReviewNotificationToUser(id);
+        if (sent) {
+            return ResponseEntity.ok(Map.of("message", "Application review email sent successfully"));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending"
+            ));
+        }
+    }
 }
