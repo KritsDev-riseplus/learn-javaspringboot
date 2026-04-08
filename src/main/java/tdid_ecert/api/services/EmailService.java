@@ -13,6 +13,7 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Map;
+import org.springframework.core.io.ClassPathResource;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,14 @@ public class EmailService {
 
     @Value("${app.mail.from}")
     private String fromEmail;
+
+    /**
+     * Check if email is properly configured
+     */
+    private boolean isEmailConfigured() {
+        return !"your-email@gmail.com".equals(System.getProperty("spring.mail.username", "your-email@gmail.com"))
+                && mailSender != null;
+    }
 
     /**
      * Send account notification email
@@ -41,14 +50,14 @@ public class EmailService {
             String htmlContent = templateEngine.process("email/account-notification", context);
             sendHtmlEmail(to, subject, htmlContent);
         } catch (Exception e) {
-            log.error("Failed to send email to {}: {}", to, e.getMessage());
+            log.warn("⚠️ Email not sent to {} (SMTP not configured): {}", to, e.getMessage());
         }
     }
 
     /**
      * Send generic HTML email
      */
-    public void sendHtmlEmail(String to, String subject, String htmlContent) {
+    public boolean sendHtmlEmail(String to, String subject, String htmlContent) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -59,10 +68,67 @@ public class EmailService {
             helper.setText(htmlContent, true);
 
             mailSender.send(message);
-            log.info("Email sent successfully to {}", to);
+            log.info("✅ Email sent successfully to {}", to);
+            return true;
         } catch (MessagingException e) {
-            log.error("Failed to send email to {}: {}", to, e.getMessage());
-            throw new RuntimeException("Failed to send email", e);
+            log.warn("⚠️ Failed to send email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Send custom email from admin to user with formatted template
+     */
+    public boolean sendCustomEmail(String to, String subject, String recipientName, String content, String senderName) {
+        try {
+            Context context = new Context();
+            context.setVariable("subject", subject);
+            context.setVariable("recipientName", recipientName != null ? recipientName : "User");
+            context.setVariable("content", content);
+            context.setVariable("senderName", senderName != null ? senderName : "Administrator");
+
+            String htmlContent = templateEngine.process("email/custom-email", context);
+            return sendHtmlEmail(to, subject, htmlContent);
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send custom email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Send payment confirmation email with inline logo attachment
+     */
+    public boolean sendPaymentConfirmation(String to, String recipientName, String orderNumber, String continueLink) {
+        try {
+            Context context = new Context();
+            context.setVariable("recipientEmail", to);
+            context.setVariable("orderNumber", orderNumber);
+            context.setVariable("continueLink", continueLink);
+            context.setVariable("recipientInitial", recipientName != null && !recipientName.isEmpty()
+                    ? recipientName.substring(0, 1).toUpperCase() : "U");
+
+            String subject = "TDID : แจ้งยืนยันการชำระเงิน และดำเนินการต่อเพื่อสร้างรายการคำขอต่อไป";
+            String htmlContent = templateEngine.process("email/payment-confirmation", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment with cid:logo
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send payment confirmation to {}: {}", to, e.getMessage());
+            return false;
         }
     }
 }

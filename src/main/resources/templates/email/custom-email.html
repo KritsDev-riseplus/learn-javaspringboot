@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        .content {
+            padding: 30px;
+            color: #333333;
+            line-height: 1.7;
+        }
+        .greeting {
+            font-size: 18px;
+            margin: 0 0 20px 0;
+            color: #1a1a1a;
+        }
+        .message-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .message-box p {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 24px 0;
+        }
+        .signature {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .signature strong {
+            color: #333333;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 24px 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer p {
+            margin: 4px 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #667eea;
+            color: #ffffff;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 th:text="${subject}">Message from Administrator</h1>
+            <span class="badge">TDID E-Cert</span>
+        </div>
+        <div class="content">
+            <p class="greeting">Dear <strong th:text="${recipientName}">User</strong>,</p>
+            
+            <div class="message-box">
+                <p th:text="${content}">This is your message content.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <p class="signature">
+                Best regards,<br/>
+                <strong th:text="${senderName}">Administrator</strong>
+            </p>
+        </div>
+        <div class="footer">
+            <p>This is an automated message from TDID E-Cert system.</p>
+            <p>&copy; 2024 TDID E-Cert. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

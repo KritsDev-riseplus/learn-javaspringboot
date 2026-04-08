@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family:
+          "Open Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        font-weight: 400;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 20px 0;
+        color: #000000;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .sender-info {
+        margin-bottom: 16px;
+      }
+      .sender-email {
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+      .recipient-info {
+        color: #666666;
+        font-size: 14px;
+      }
+      .content {
+        font-size: 15px;
+      }
+      .content p {
+        margin: 6px 0;
+      }
+      .details-section {
+        margin: 10px 0;
+      }
+      .details-section p {
+        margin: 3px 0;
+      }
+      .link-section {
+        margin: 12px 0;
+      }
+      .link-section p {
+        margin: 3px 0;
+      }
+      .action-link {
+        color: #1a73e8;
+        text-decoration: none;
+        font-weight: 600;
+        display: block;
+        margin: 4px 0 10px 0;
+      }
+      .notice {
+        margin: 14px 0;
+      }
+      .contact-info {
+        margin: 12px 0;
+      }
+      .footer-note {
+        margin: 16px 0;
+      }
+      .signature {
+        margin-top: 20px;
+      }
+      .signature p {
+        margin: 2px 0;
+      }
+      .company-logo {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Content -->
+      <div class="content">
+        <p>ระบบได้รับการชำระเงินของท่านเรียบร้อยแล้ว</p>
+
+        <div class="details-section">
+          <p>โดยมีรายละเอียด ดังนี้</p>
+          <p>
+            หมายเลขคำสั่งซื้อ :
+            <span th:text="${orderNumber}">TDID000000000000000000001</span>
+          </p>
+          <p>
+            ประเภทใบรับรองอิเล็กทรอนิกส์ : นิติบุคคล (Enterprise Certificate)
+          </p>
+        </div>
+
+        <div class="link-section">
+          <p>กรุณาลิงค์ด้านล่างเพื่อดำเนินการสร้างรายการคำขอต่อไป</p>
+          <a
+            th:href="${continueLink}"
+            class="action-link"
+            th:text="${continueLink}"
+            >https://yourdomain/continue?token=xxxxx</a
+          >
+        </div>
+
+        <p class="notice">
+          ทั้งนี้ ลิงค์ดังกล่าวสามารถใช้งานได้ภายในระยะเวลา 7 วัน
+          นับจากวันที่ได้รับอีเมลฉบับนี้<br />
+          หากท่านได้ดำเนินการสร้างรายการคำขอเรียบร้อยสมบูรณ์แล้ว
+          ลิงค์นี้จะไม่สามารถใช้งานได้อีก
+        </p>
+
+        <p class="contact-info">
+          หากมีข้อสอบถามเพิ่มเติม กรุณาติดต่อหน่วยงานรับลงทะเบียนได้ที่
+          customersupport@thaidigitalid.com
+        </p>
+
+        <p class="footer-note">
+          หมายเหตุ : อีเมลนี้ถูกส่งด้วยระบบอัตโนมัติ กรุณาอย่าตอบกลับ
+        </p>
+
+        <div class="signature">
+          <p>ขอแสดงความนับถือ</p>
+          <p>บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+        </div>
+
+        <!-- Company Logo (Inline attachment via cid) -->
+        <div class="company-logo">
+          <img
+            src="cid:logo"
+            alt="TDID Logo"
+            style="max-width: 120px; height: auto; display: block; border: 0"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
