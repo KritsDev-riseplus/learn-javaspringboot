@@ -256,4 +256,29 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/new-admin-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send new admin account notification email", description = "Send new admin account credentials and activation link (Admin only)")
+    public ResponseEntity<Map<String, String>> sendNewAdminEmail(@PathVariable Long id) {
+        // Generate mock account data
+        String username = "admin" + id;
+        String password = "Temp@" + System.currentTimeMillis() % 10000;
+        String activationLink = "https://thaidigitalid.com/activate?token=" + java.util.UUID.randomUUID();
+
+        boolean sent = userService.sendNewAdminToUser(id, username, password, activationLink);
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมลข้อมูลผู้ใช้งานใหม่ส่งสำเร็จ!",
+                "username", username
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "username", username
+            ));
+        }
+    }
 }

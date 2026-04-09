@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      font-family: Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000000;
+    "
+  >
+    <div class="container" style="max-width: 600px; margin: 0 auto">
+      <div style="margin-bottom: 16px">
+        <p style="margin: 0">
+          บัญชีของคุณได้รับการสร้างเรียบร้อยแล้ว
+          กรุณาใช้ข้อมูลต่อไปนี้ในการเข้าสู่ระบบ:
+        </p>
+      </div>
+
+      <div style="margin-bottom: 16px">
+        <p style="margin: 0 0 8px 0">
+          <strong
+            >ชื่อผู้ใช้ (Username):
+            <span th:text="${username}">admin01</span></strong
+          >
+        </p>
+        <p style="margin: 0">
+          <strong
+            >รหัสผ่าน (Password):
+            <span th:text="${password}">Temp@1234</span></strong
+          >
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0">
+          เพื่อความปลอดภัย กรุณาเปลี่ยนรหัสผ่านของคุณทันทีหลังจากเข้าสู่ระบบ
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0 0 12px 0">ขั้นตอนการเปิดใช้งานบัญชี:</p>
+        <p style="margin: 0">
+          กรุณา
+          <a
+            th:href="${activationLink}"
+            style="
+              color: #3366cc;
+              text-decoration: underline;
+              word-break: break-all;
+            "
+            >คลิกที่นี่</a
+          >
+          เพื่อเปิดใช้งานบัญชีของคุณ
+        </p>
+      </div>
+
+      <div style="margin-bottom: 25px">
+        <p style="margin: 0 0 4px 0">ขอแสดงความนับถือ</p>
+        <p style="margin: 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+      </div>
+
+      <div style="margin-top: 30px">
+        <img
+          src="cid:logo"
+          alt="TDID Logo"
+          style="width: 140px; height: auto; display: block"
+        />
+      </div>
+    </div>
+  </body>
+</html>

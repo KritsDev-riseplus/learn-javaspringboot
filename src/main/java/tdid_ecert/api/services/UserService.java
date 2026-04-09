@@ -215,6 +215,19 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send new admin account notification email", description = "Send new admin account credentials and activation link")
+    public boolean sendNewAdminToUser(Long userId, String username, String password, String activationLink) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendNewAdminEmail(
+                user.getEmail(),
+                username,
+                password,
+                activationLink
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

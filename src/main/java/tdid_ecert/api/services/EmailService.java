@@ -362,4 +362,39 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send new admin account notification email
+     */
+    public boolean sendNewAdminEmail(String to, String username, String password, String activationLink) {
+        try {
+            Context context = new Context();
+            context.setVariable("username", username);
+            context.setVariable("password", password);
+            context.setVariable("activationLink", activationLink);
+
+            String subject = "TDID : ข้อมูลผู้ใช้งานและรหัสผ่านใหม่ของคุณ";
+            String htmlContent = templateEngine.process("email/new-admin", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ New admin email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send new admin email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }
