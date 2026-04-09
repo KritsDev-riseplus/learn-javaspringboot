@@ -305,4 +305,29 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/send-otp-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send OTP verification email", description = "Send OTP code and reference code to user (Admin only)")
+    public ResponseEntity<Map<String, String>> sendOtpEmail(@PathVariable Long id) {
+        // Generate mock OTP data
+        String otp = String.format("%06d", new java.util.Random().nextInt(1000000));
+        String refCode = "REF-" + System.currentTimeMillis() % 1000000;
+
+        boolean sent = userService.sendOtpToUser(id, otp, refCode);
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมล OTP ส่งสำเร็จ!",
+                "otp", otp,
+                "refCode", refCode
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "otp", otp
+            ));
+        }
+    }
 }

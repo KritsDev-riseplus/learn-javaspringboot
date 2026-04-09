@@ -240,6 +240,18 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send OTP verification email", description = "Send OTP code and reference code to user")
+    public boolean sendOtpToUser(Long userId, String otp, String refCode) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendOtpEmail(
+                user.getEmail(),
+                otp,
+                refCode
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

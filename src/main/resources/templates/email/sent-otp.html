@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      font-family: Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000000;
+    "
+  >
+    <div
+      class="container"
+      style="max-width: 500px; margin: 0 auto; text-align: center"
+    >
+      <div style="margin-bottom: 8px">
+        <p style="margin: 0">OTP:</p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0">
+          <span
+            style="
+              font-size: 32px;
+              font-weight: bold;
+              letter-spacing: 4px;
+              color: #3366cc;
+            "
+            th:text="${otp}"
+            >123456</span
+          >
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0">
+          (รหัสอ้างอิง:
+          <span style="font-weight: bold" th:text="${refCode}">REF-123456</span
+          >)
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0">
+          กรุณานำรหัสนี้ไปใช้ภายใน 5 นาที และเพื่อความปลอดภัย
+          โปรดอย่าแจ้งรหัสนี้กับผู้อื่นเป็นอันขาด
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0; color: #666666">
+          หมายเหตุ : อีเมลนี้ถูกส่งด้วยระบบอัตโนมัติ กรุณาอย่าตอบกลับ
+        </p>
+      </div>
+
+      <div style="margin-top: 30px">
+        <img
+          src="cid:logo"
+          alt="TDID Logo"
+          style="width: 140px; height: auto; display: block; margin: 0 auto"
+        />
+      </div>
+    </div>
+  </body>
+</html>

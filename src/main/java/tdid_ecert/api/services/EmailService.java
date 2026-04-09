@@ -431,4 +431,38 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send OTP verification email
+     */
+    public boolean sendOtpEmail(String to, String otp, String refCode) {
+        try {
+            Context context = new Context();
+            context.setVariable("otp", otp);
+            context.setVariable("refCode", refCode);
+
+            String subject = "TDID : Verify Email OTP";
+            String htmlContent = templateEngine.process("email/sent-otp", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ OTP email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send OTP email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }
