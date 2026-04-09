@@ -397,4 +397,38 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send password reset notification email
+     */
+    public boolean sendNewPasswordEmail(String to, String newPassword, String loginUrl) {
+        try {
+            Context context = new Context();
+            context.setVariable("newPassword", newPassword);
+            context.setVariable("loginUrl", loginUrl);
+
+            String subject = "TDID : รหัสผ่านใหม่ของคุณ";
+            String htmlContent = templateEngine.process("email/new-password", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ New password email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send new password email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }

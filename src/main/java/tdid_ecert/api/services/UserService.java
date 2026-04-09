@@ -228,6 +228,18 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send password reset notification email", description = "Send new password and login link to user")
+    public boolean sendNewPasswordToUser(Long userId, String newPassword, String loginUrl) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendNewPasswordEmail(
+                user.getEmail(),
+                newPassword,
+                loginUrl
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

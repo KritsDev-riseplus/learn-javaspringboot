@@ -281,4 +281,28 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/new-password-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send password reset notification email", description = "Send new password and login link to user (Admin only)")
+    public ResponseEntity<Map<String, String>> sendNewPasswordEmail(@PathVariable Long id) {
+        // Generate mock password data
+        String newPassword = "Reset@" + System.currentTimeMillis() % 10000;
+        String loginUrl = "https://thaidigitalid.com/login";
+
+        boolean sent = userService.sendNewPasswordToUser(id, newPassword, loginUrl);
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมลรหัสผ่านใหม่ส่งสำเร็จ!",
+                "loginUrl", loginUrl
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "loginUrl", loginUrl
+            ));
+        }
+    }
 }
