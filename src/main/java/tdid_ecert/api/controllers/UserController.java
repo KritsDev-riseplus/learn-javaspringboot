@@ -330,4 +330,38 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/welcome-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send welcome email with Application ID", description = "Send welcome email with Application ID and validity period (Admin only)")
+    public ResponseEntity<Map<String, String>> sendWelcomeEmail(@PathVariable Long id) {
+        // Generate mock welcome email data
+        String applicationId = "NEW-06-O191-3-1-25-" + (5000000 + id);
+        int validDays = 60;
+
+        java.time.LocalDate validFrom = java.time.LocalDate.now();
+        java.time.LocalDate validTo = validFrom.plusDays(validDays);
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy", java.util.Locale.ENGLISH);
+
+        String loginUrl = "https://thaidigitalid.com/login";
+
+        boolean sent = userService.sendWelcomeEmailToUser(
+                id, applicationId, validDays,
+                validFrom.format(dateFormatter), validTo.format(dateFormatter), loginUrl
+        );
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมลยินดีต้อนรับส่งสำเร็จ!",
+                "applicationId", applicationId,
+                "validDays", String.valueOf(validDays)
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "applicationId", applicationId
+            ));
+        }
+    }
 }

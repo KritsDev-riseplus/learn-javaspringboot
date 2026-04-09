@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      font-family: Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000000;
+    "
+  >
+    <div class="container" style="max-width: 600px; margin: 0 auto">
+      <div style="margin-bottom: 16px">
+        <p style="margin: 0">
+          กรุณาเข้าสู่ระบบเพื่อรับใบรับรองอิเล็กทรอนิกส์ด้วย<br />
+          <strong
+            >หมายเลขรายการคำขอ (Application ID):
+            <span th:text="${applicationId}"
+              >NEW-06-O191-3-1-25-5000001</span
+            ></strong
+          >
+        </p>
+      </div>
+
+      <div style="margin-bottom: 16px">
+        <p style="margin: 0">
+          Application ID นี้มีอายุการใช้งาน
+          <span th:text="${validDays}">60</span> วัน
+          สามารถใช้งานได้ในระหว่างวันที่
+          <span th:text="${validFrom}">14 Jan 2026</span> -
+          <span th:text="${validTo}">15 Mar 2026</span> เท่านั้น
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0">
+          ที่เว็บไซต์
+          <a
+            th:href="${loginUrl}"
+            style="
+              color: #3366cc;
+              text-decoration: underline;
+              word-break: break-all;
+            "
+            th:text="${loginUrl}"
+            >https://thaidigitalid.com/login</a
+          >
+        </p>
+      </div>
+
+      <div style="margin-bottom: 24px">
+        <p style="margin: 0; color: #666666">
+          หมายเหตุ : อีเมลนี้ถูกส่งด้วยระบบอัตโนมัติ กรุณาอย่าตอบกลับ
+        </p>
+      </div>
+
+      <div style="margin-bottom: 25px">
+        <p style="margin: 0 0 4px 0">ขอแสดงความนับถือ</p>
+        <p style="margin: 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+      </div>
+
+      <div style="margin-top: 30px">
+        <img
+          src="cid:logo"
+          alt="TDID Logo"
+          style="width: 140px; height: auto; display: block"
+        />
+      </div>
+    </div>
+  </body>
+</html>

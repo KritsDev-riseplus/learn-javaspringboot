@@ -252,6 +252,21 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send welcome email with Application ID", description = "Send welcome email with Application ID and validity period")
+    public boolean sendWelcomeEmailToUser(Long userId, String applicationId, int validDays, String validFrom, String validTo, String loginUrl) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendWelcomeEmail(
+                user.getEmail(),
+                applicationId,
+                validDays,
+                validFrom,
+                validTo,
+                loginUrl
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

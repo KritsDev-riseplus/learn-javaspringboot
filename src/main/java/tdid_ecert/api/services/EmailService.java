@@ -465,4 +465,41 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send welcome email with Application ID and validity period
+     */
+    public boolean sendWelcomeEmail(String to, String applicationId, int validDays, String validFrom, String validTo, String loginUrl) {
+        try {
+            Context context = new Context();
+            context.setVariable("applicationId", applicationId);
+            context.setVariable("validDays", validDays);
+            context.setVariable("validFrom", validFrom);
+            context.setVariable("validTo", validTo);
+            context.setVariable("loginUrl", loginUrl);
+
+            String subject = "TDID : ยินดีต้อนรับเข้าสู่ระบบใบรับรองอิเล็กทรอนิกส์";
+            String htmlContent = templateEngine.process("email/welcome-email", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Welcome email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send welcome email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }
