@@ -1,13 +1,52 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      table {
+        padding: .75rem;
+        color: var(--bs-table-color-state, var(--bs-table-color-type, #071437));
+        font-family: Helvetica, sans-serif;
+        font-size: 16px;
+        border-collapse: collapse;
+        width: 70%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        text-align: left;
+        border: 2px solid black;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        padding: 9px;
+        vertical-align: top;
+      }
+
+      .fw-bold {
+        font-weight: 600 !important;
+      }
+
+      li {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+
+      p {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+    </style>
   </head>
   <body
     style="
       margin: 0;
-      padding: 50px 0;
+      margin: 0;
+      padding: 30px;
       background-color: #ffffff;
       font-family: Helvetica, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -18,7 +57,7 @@
   >
     <div
       class="container"
-      style="max-width: 700px; margin: 0 auto; padding: 0 40px"
+      style="max-width: 800px; margin: 0 auto"
     >
       <div class="content">
         <div style="margin-bottom: 20px">
@@ -26,8 +65,8 @@
         </div>
 
         <div style="margin-bottom: 20px">
-          <p style="margin: 0 0 4px 0">โดยมีรายละเอียด ดังนี้</p>
-          <p style="margin: 0 0 4px 0">
+          <p style="margin: 0">โดยมีรายละเอียด ดังนี้</p>
+          <p style="margin: 0">
             หมายเลขคำสั่งซื้อ :
             <span th:text="${orderNumber}" style="font-weight: 400"
               >TDID251225145815000000001</span
@@ -39,7 +78,7 @@
         </div>
 
         <div style="margin-bottom: 20px">
-          <p style="margin: 0 0 6px 0">
+          <p style="margin: 0">
             กรุณาคลิกลิงก์ด้านล่างเพื่อดำเนินการสร้างรายการคำขอต่อไป
           </p>
           <a
@@ -58,14 +97,14 @@
         </div>
 
         <div style="margin-bottom: 20px">
-          <p style="margin: 0 0 12px 0">
+          <p style="margin: 0">
             ทั้งนี้ ลิงก์ดังกล่าวสามารถใช้งานได้ภายในระยะเวลา 7 วัน
             นับจากวันที่ได้รับอีเมลฉบับนี้<br />
             หากท่านได้ดำเนินการสร้างรายการคำขอจนเสร็จสมบูรณ์แล้ว
             ลิงก์นี้จะไม่สามารถใช้งานได้อีก
           </p>
 
-          <p style="margin: 0 0 12px 0">
+          <p style="margin: 0">
             หากมีข้อสอบถามเพิ่มเติม กรุณาติดต่อหน่วยงานรับลงทะเบียนได้ที่
             <a
               href="mailto:customersupport@thaidigitalid.com"
@@ -80,15 +119,15 @@
         </div>
 
         <div style="margin-top: 30px; margin-bottom: 20px">
-          <p style="margin: 0 0 4px 0">ขอแสดงความนับถือ</p>
-          <p style="margin: 0 0 4px 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+          <p style="margin: 0">ขอแสดงความนับถือ</p>
+          <p style="margin: 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
         </div>
 
         <div style="margin-top: 20px">
           <img
             src="cid:logo"
             alt="TDID Logo"
-            style="width: 150px; height: auto; display: block"
+            style="width: 140px; height: auto; display: block"
           />
         </div>
       </div>

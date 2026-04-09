@@ -1,8 +1,47 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      table {
+        padding: 0.75rem;
+        color: var(--bs-table-color-state, var(--bs-table-color-type, #071437));
+        font-family: Helvetica, sans-serif;
+        font-size: 16px;
+        border-collapse: collapse;
+        width: 70%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        text-align: left;
+        border: 2px solid black;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        padding: 9px;
+        vertical-align: top;
+      }
+
+      .fw-bold {
+        font-weight: 600 !important;
+      }
+
+      li {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+
+      p {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+    </style>
   </head>
   <body
     style="
@@ -34,17 +73,19 @@
         </div>
 
         <div style="margin-bottom: 20px">
-          <p style="margin: 0 0 6px 0">
+          <p style="margin: 0; font-weight: 600">
             Application ID :
-            <span th:text="${applicationId}">NEW-06-O191-3-1-25-5000001</span>
+            <span th:text="${applicationId}" style="font-weight: 600"
+              >NEW-06-O191-3-1-25-5000001</span
+            >
           </p>
-          <p style="margin: 0 0 6px 0">
+          <p style="margin: 0">
             ประเภทใบรับรองอิเล็กทรอนิกส์ :
             <span th:text="${certType}"
               >นิติบุคคล (Enterprise Certificate)</span
             >
           </p>
-          <p style="margin: 0 0 6px 0">
+          <p style="margin: 0">
             ชื่อนิติบุคคล :
             <span th:text="${companyName}">บริษัท ไทยดิจิทัล ไอดี จำกัด</span>
           </p>
@@ -57,10 +98,19 @@
         <div style="margin-bottom: 20px">
           <table
             style="
-              width: 100%;
-              border-collapse: collapse;
-              font-size: 16px;
+              padding: 0.75rem;
+              color: var(
+                --bs-table-color-state,
+                var(--bs-table-color-type, #071437)
+              );
               font-family: Helvetica, sans-serif;
+              font-size: 16px;
+              border-collapse: collapse;
+              width: 100%;
+              margin-top: 25px;
+              margin-bottom: 25px;
+              text-align: left;
+              border: 2px solid black;
             "
           >
             <tr>
@@ -69,12 +119,12 @@
                   border: 1px solid #b3b3b3;
                   padding: 12px 16px;
                   font-weight: bold;
-                  width: 55%;
+                  white-space: nowrap;
                 "
               >
                 หมายเลขคำขอใบรับรองอิเล็กทรอนิกส์ (Application ID)
               </td>
-              <td style="border: 1px solid #b3b3b3; padding: 12px 16px">
+              <td style="border: 1px solid #dddddd; padding: 9px">
                 <span th:text="${applicationId}"
                   >NEW-06-O191-3-1-25-5000001</span
                 >
@@ -90,7 +140,7 @@
               >
                 รหัสอนุมัติ (Authorization Code)
               </td>
-              <td style="border: 1px solid #b3b3b3; padding: 12px 16px">
+              <td style="border: 1px solid #dddddd; padding: 9px">
                 <span th:text="${authCode}">TD2451528DMNK2515</span>
               </td>
             </tr>
@@ -107,7 +157,7 @@
         </div>
 
         <div style="margin-bottom: 25px">
-          <p style="margin: 0 0 6px 0">
+          <p style="margin: 0">
             กรุณาเข้าสู่ระบบเพื่อรับใบรับรองอิเล็กทรอนิกส์ด้วย
           </p>
           <p style="margin: 0">
@@ -142,7 +192,7 @@
         </div>
 
         <div style="margin-bottom: 25px">
-          <p style="margin: 0 0 4px 0">ขอแสดงความนับถือ</p>
+          <p style="margin: 0">ขอแสดงความนับถือ</p>
           <p style="margin: 0">บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
         </div>
 
