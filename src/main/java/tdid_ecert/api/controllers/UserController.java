@@ -1,7 +1,6 @@
 package tdid_ecert.api.controllers;
 
 import tdid_ecert.api.dto.CreateUserDTO;
-import tdid_ecert.api.dto.SendEmailRequest;
 import tdid_ecert.api.dto.UpdateUserDTO;
 import tdid_ecert.api.dto.UserDTO;
 import tdid_ecert.api.services.UserService;
@@ -60,21 +59,6 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{id}/email")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Send email to user", description = "Send a custom email to a specific user (Admin only)")
-    public ResponseEntity<Map<String, String>> sendEmail(@PathVariable Long id, @RequestBody SendEmailRequest request) {
-        boolean sent = userService.sendEmailToUser(id, request.getSubject(), request.getContent());
-        if (sent) {
-            return ResponseEntity.ok(Map.of("message", "Email sent successfully"));
-        } else {
-            return ResponseEntity.ok(Map.of(
-                "message", "Email logged but not sent (SMTP not configured)",
-                "info", "Configure SMTP settings in application.properties to enable email sending"
-            ));
-        }
     }
 
     @PostMapping("/{id}/payment-email")

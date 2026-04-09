@@ -12,7 +12,6 @@ import org.thymeleaf.context.Context;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
 
 @Service
@@ -26,33 +25,6 @@ public class EmailService {
 
     @Value("${app.mail.from}")
     private String fromEmail;
-
-    /**
-     * Check if email is properly configured
-     */
-    private boolean isEmailConfigured() {
-        return !"your-email@gmail.com".equals(System.getProperty("spring.mail.username", "your-email@gmail.com"))
-                && mailSender != null;
-    }
-
-    /**
-     * Send account notification email
-     */
-    public void sendAccountNotification(String to, String subject, Map<String, Object> userInfo) {
-        try {
-            Context context = new Context();
-            context.setVariable("subject", subject);
-            context.setVariable("greeting", "Dear " + userInfo.getOrDefault("fullName", "User") + ",");
-            context.setVariable("message", "Your account has been created successfully. Here are your account details:");
-            context.setVariable("userInfo", userInfo);
-            context.setVariable("additionalMessage", "Please contact your administrator if you have any questions.");
-
-            String htmlContent = templateEngine.process("email/account-notification", context);
-            sendHtmlEmail(to, subject, htmlContent);
-        } catch (Exception e) {
-            log.warn("⚠️ Email not sent to {} (SMTP not configured): {}", to, e.getMessage());
-        }
-    }
 
     /**
      * Send generic HTML email
@@ -72,25 +44,6 @@ public class EmailService {
             return true;
         } catch (MessagingException e) {
             log.warn("⚠️ Failed to send email to {}: {}", to, e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Send custom email from admin to user with formatted template
-     */
-    public boolean sendCustomEmail(String to, String subject, String recipientName, String content, String senderName) {
-        try {
-            Context context = new Context();
-            context.setVariable("subject", subject);
-            context.setVariable("recipientName", recipientName != null ? recipientName : "User");
-            context.setVariable("content", content);
-            context.setVariable("senderName", senderName != null ? senderName : "Administrator");
-
-            String htmlContent = templateEngine.process("email/custom-email", context);
-            return sendHtmlEmail(to, subject, htmlContent);
-        } catch (Exception e) {
-            log.warn("⚠️ Failed to send custom email to {}: {}", to, e.getMessage());
             return false;
         }
     }

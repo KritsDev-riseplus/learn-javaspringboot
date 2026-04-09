@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -56,20 +54,6 @@ public class UserService {
                 .filter(user -> !"ADMIN".equals(user.getRole().getName()))
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Operation(summary = "Send email to user", description = "Send a custom email message to a specific user")
-    public boolean sendEmailToUser(Long userId, String subject, String content) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
-        return emailService.sendCustomEmail(
-                user.getEmail(),
-                subject,
-                user.getFullName(),
-                content,
-                getCurrentUsername()
-        );
     }
 
     @Operation(summary = "Send payment confirmation email", description = "Send auto-generated payment confirmation email to a user")
@@ -240,19 +224,6 @@ public class UserService {
         user.setRole(role);
 
         User savedUser = userRepository.save(user);
-
-        // Send notification email
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("username", savedUser.getUsername());
-        userInfo.put("email", savedUser.getEmail());
-        userInfo.put("fullName", savedUser.getFullName());
-        userInfo.put("role", savedUser.getRole().getName());
-
-        emailService.sendAccountNotification(
-                savedUser.getEmail(),
-                "Your TDID E-Cert Account Has Been Created",
-                userInfo
-        );
 
         return convertToDTO(savedUser);
     }

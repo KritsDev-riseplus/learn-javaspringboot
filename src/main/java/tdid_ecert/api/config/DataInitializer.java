@@ -39,7 +39,7 @@ public class DataInitializer implements CommandLineRunner {
 
         // Seed 10 test users
         String[][] users = {
-            {"user1", "password123", "kitsada6963@gmail.com", "Alice Johnson"},
+            {"user1", "password123", "thanakrit.k@riseplus.tech", "Thanakrit Johnson"},
             {"user2", "password123", "user2@example.com", "Bob Smith"},
             {"user3", "password123", "user3@example.com", "Charlie Brown"},
             {"user4", "password123", "user4@example.com", "Diana Prince"},
