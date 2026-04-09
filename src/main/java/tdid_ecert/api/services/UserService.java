@@ -196,6 +196,25 @@ public class UserService {
         );
     }
 
+    @Operation(summary = "Send certificate download notification email", description = "Send certificate download email with serial number, status, and download link")
+    public boolean sendCertificateDownloadToUser(Long userId, String applicationId, String serialNumber, String status, String statusColor, String validFrom, String validTo, String downloadLink) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return emailService.sendCertificateDownloadEmail(
+                user.getEmail(),
+                user.getEmail(),
+                user.getFullName(),
+                applicationId,
+                serialNumber,
+                status,
+                statusColor,
+                validFrom,
+                validTo,
+                downloadLink
+        );
+    }
+
     @Operation(summary = "Get user by ID", description = "Retrieve a single user by their ID")
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)

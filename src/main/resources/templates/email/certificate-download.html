@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      table {
+        padding: 0.75rem;
+        color: var(--bs-table-color-state, var(--bs-table-color-type, #071437));
+        font-family: Helvetica, sans-serif;
+        font-size: 16px;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 650px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        text-align: left;
+        border: 2px solid black;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        padding: 9px;
+        vertical-align: top;
+      }
+
+      .fw-bold {
+        font-weight: 600 !important;
+      }
+
+      li {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+
+      p {
+        font-size: 16px;
+        margin: 0;
+        padding-bottom: 4px;
+        color: #000000;
+      }
+    </style>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      font-family: Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000000;
+    "
+  >
+    <div class="container" style="max-width: 800px; margin: 0 auto">
+      <div class="content">
+        <div style="margin-bottom: 25px">
+          <p>
+            ขณะนี้บริษัท ไทยดิจิทัล ไอดี จำกัด (TDID) ได้มอบใบรับรองอิเล็กทรอนิกส์ หมายเลขรายการคำขอ </br>
+            <p> <strong>Application ID : </strong><strong th:text="${applicationId}"
+              >NEW-06-O191-3-1-25-5000001</strong> ให้แก่ท่านเรียบร้อยแล้ว </p> 
+          </p>
+        </div>
+
+        <table role="presentation">
+          <tr>
+            <td
+              style="font-weight: bold; width: 45%; background-color: #f9f9f9"
+            >
+              Certificate Serial Number:
+            </td>
+            <td><span th:text="${serialNumber}">4A3B2C1D0E5F6A7B8C9D</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; background-color: #f9f9f9">
+              Status:
+            </td>
+            <td th:style="${statusColor}">
+              <span th:text="${status}">Active</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; background-color: #f9f9f9">
+              Valid from:
+            </td>
+            <td><span th:text="${validFrom}">14 Jan 2026</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; background-color: #f9f9f9">
+              Valid to:
+            </td>
+            <td><span th:text="${validTo}">14 Jan 2027</span></td>
+          </tr>
+        </table>
+
+        <div style="margin-bottom: 25px">
+          <p>
+            ท่านสามารถดาวน์โหลดใบรับรองอิเล็กทรอนิกส์ได้ที่
+            <a
+              th:href="${downloadLink}"
+              style="color: #3366cc; text-decoration: underline"
+              >ดาวน์โหลดใบรับรองฯ</a
+            >
+            และท่านดำเนินการจัดเก็บไฟล์ใบรับรองอิเล็กทรอนิกส์ และ Private Key
+            ได้ตามขั้นตอนดังนี้
+          </p>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 25px;
+            border: 1px solid #e5e5e5;
+            padding: 25px;
+            border-radius: 6px;
+          "
+        >
+          <div style="text-align: center; margin-bottom: 20px">
+            <strong style="font-size: 18px"
+              >ขั้นตอนการจัดเก็บไฟล์ใบรับรองอิเล็กทรอนิกส์ และ Private
+              Key</strong
+            >
+          </div>
+
+          <div style="margin: 0 auto">
+            <p style="margin-bottom: 6px">
+              1. เปิดโปรแกรม OpenSSL และคัดลอกคำสั่ง
+            </p>
+
+            <div style="margin-bottom: 12px; padding-left: 20px">
+              <div
+                style="
+                  background-color: #f4f4f4;
+                  padding: 12px 15px;
+                  font-size: 14px;
+                  border-radius: 4px;
+                  border: 1px solid #eeeeee;
+                  word-break: break-all;
+                  font-family: monospace;
+                "
+              >
+                pkcs12 -export -in cert.cer -inkey cert.key -out certificate.p12
+              </div>
+            </div>
+
+            <p style="margin-bottom: 15px">
+              และวางลงไปในหน้าต่างโปรแกรม OpenSSL จากนั้นกดปุ่ม Enter
+            </p>
+
+            <p style="font-size: 14px; color: #666666; font-weight: bold">
+              คำอธิบายคำสั่ง
+            </p>
+            <div style="margin-bottom: 15px; padding-left: 20px">
+              <p style="font-size: 14px; color: #666666">
+                -export : สร้างไฟล์ .p12
+              </p>
+              <p style="font-size: 14px; color: #666666">
+                -in cert.cer : ไฟล์ใบรับรองอิเล็กทรอนิกส์ (.cer)
+              </p>
+              <p style="font-size: 14px; color: #666666">
+                -inkey cert.key : ไฟล์ Private Key (.key)
+              </p>
+              <p style="font-size: 14px; color: #666666">
+                -out certificate.p12 : ไฟล์ .p12 ที่จะสร้าง
+              </p>
+            </div>
+
+            <p>
+              2. ตั้งรหัสผ่านและยืนยันในโปรแกรม OpenSSL
+              (ตัวอักษรจะไม่แสดงขณะพิมพ์)
+            </p>
+            <p>3. นำไฟล์ใบรับรองฯ (certificate.p12) ไปใช้งาน</p>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-bottom: 35px;
+            border: 1px solid #e5e5e5;
+            padding: 25px;
+            border-radius: 6px;
+          "
+        >
+          <p style="font-weight: bold; margin-bottom: 15px">
+            กรณีต้องการจัดเก็บใบรับรองฯ ลงในอุปกรณ์ eToken (P11)
+            ให้ผู้ใช้ดำเนินการต่อจากขั้นตอนที่ 3 ดังนี้
+          </p>
+
+          <table
+            role="presentation"
+            style="border: none; width: 100%; margin: 0; padding: 0"
+          >
+            <tr>
+              <td
+                style="
+                  border: none;
+                  padding: 4px 10px 4px 0;
+                  vertical-align: top;
+                  width: 25px;
+                  color: #3366cc;
+                "
+              >
+                &#9205;
+              </td>
+              <td style="border: none; padding: 4px 0">
+                เปิดโปรแกรม Safenet Authentication Client Tools (SAC)
+              </td>
+            </tr>
+            <tr>
+              <td style="border: none; padding: 2px 10px 2px 0"></td>
+              <td
+                style="
+                  border: none;
+                  padding: 2px 0;
+                  font-size: 14px;
+                  color: #666666;
+                "
+              >
+                - สำหรับ
+                <a
+                  href="https://thaidigitalid.com/downloads/sac-32"
+                  style="color: #3366cc; text-decoration: underline"
+                  >Windows 32-bit</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td style="border: none; padding: 2px 10px 12px 0"></td>
+              <td
+                style="
+                  border: none;
+                  padding: 2px 0 12px 0;
+                  font-size: 14px;
+                  color: #666666;
+                "
+              >
+                - สำหรับ
+                <a
+                  href="https://thaidigitalid.com/downloads/sac-64"
+                  style="color: #3366cc; text-decoration: underline"
+                  >Windows 64-bit</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: none;
+                  padding: 4px 10px 4px 0;
+                  vertical-align: top;
+                  color: #3366cc;
+                "
+              >
+                &#9205;
+              </td>
+              <td style="border: none; padding: 4px 0">
+                คลิกที่ปุ่ม Advanced View (ไอคอนรูปเฟือง) มุมขวาบน
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: none;
+                  padding: 4px 10px 4px 0;
+                  vertical-align: top;
+                  color: #3366cc;
+                "
+              >
+                &#9205;
+              </td>
+              <td style="border: none; padding: 4px 0">
+                คลิกขวาที่ชื่ออุปกรณ์ eToken &gt; เลือก "Import Certificate"
+                &gt; ใส่รหัส eToken
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: none;
+                  padding: 4px 10px 4px 0;
+                  vertical-align: top;
+                  color: #3366cc;
+                "
+              >
+                &#9205;
+              </td>
+              <td style="border: none; padding: 4px 0">
+                เลือก "Import a certificate from a file" &gt; กดปุ่ม OK &gt;
+                เลือกไฟล์ใบรับรองฯ (.p12) ที่ต้องการนำเข้า
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: none;
+                  padding: 4px 10px 4px 0;
+                  vertical-align: top;
+                  color: #3366cc;
+                "
+              >
+                &#9205;
+              </td>
+              <td style="border: none; padding: 4px 0">
+                ใส่รหัสของไฟล์ใบรับรองฯ (.p12) &gt; กดปุ่ม OK &gt;
+                โปรแกรมแสดงการนำเข้าใบรับรองฯ สำเร็จ
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin-bottom: 40px">
+          <p>หมายเหตุ : อีเมลนี้ถูกส่งด้วยระบบอัตโนมัติ กรุณาอย่าตอบกลับ</p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <p>ขอแสดงความนับถือ</p>
+          <p>บริษัท ไทยดิจิทัล ไอดี จำกัด</p>
+        </div>
+
+        <div style="margin-top: 30px">
+          <img
+            src="cid:logo"
+            alt="TDID Logo"
+            style="width: 140px; height: auto; display: block"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

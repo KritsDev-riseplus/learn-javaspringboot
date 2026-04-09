@@ -219,4 +219,41 @@ public class UserController {
             ));
         }
     }
+
+    @PostMapping("/{id}/cert-download-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send certificate download notification email", description = "Send certificate download email with serial number, status, and download link (Admin only)")
+    public ResponseEntity<Map<String, String>> sendCertificateDownloadEmail(@PathVariable Long id) {
+        // Generate mock application data matching the download email format
+        String applicationId = "NEW-06-O191-3-1-25-" + (5000000 + id);
+        String serialNumber = "4A3B2C1D0E" + (5000000 + id) + "F6A7B8C9D";
+        String status = "Active";
+        String statusColor = "color: green; font-weight: 600";
+
+        // Valid for 1 year from now
+        java.time.LocalDate validFrom = java.time.LocalDate.now();
+        java.time.LocalDate validTo = validFrom.plusYears(1);
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy", java.util.Locale.ENGLISH);
+
+        String downloadLink = "https://thaidigitalid.com/e-cert/download/" + applicationId;
+
+        boolean sent = userService.sendCertificateDownloadToUser(
+                id, applicationId, serialNumber, status, statusColor,
+                validFrom.format(dateFormatter), validTo.format(dateFormatter), downloadLink
+        );
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "message", "อีเมลดาวน์โหลดใบรับรองอิเล็กทรอนิกส์ส่งสำเร็จ!",
+                "applicationId", applicationId,
+                "serialNumber", serialNumber
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Email logged but not sent (SMTP not configured)",
+                "info", "Configure SMTP settings in application.properties to enable email sending",
+                "applicationId", applicationId
+            ));
+        }
+    }
 }

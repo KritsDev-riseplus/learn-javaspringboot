@@ -321,4 +321,45 @@ public class EmailService {
             return false;
         }
     }
+
+    /**
+     * Send certificate download notification email (มอบใบรับรองอิเล็กทรอนิกส์)
+     */
+    public boolean sendCertificateDownloadEmail(String to, String recipientEmail, String recipientName, String applicationId, String serialNumber, String status, String statusColor, String validFrom, String validTo, String downloadLink) {
+        try {
+            Context context = new Context();
+            context.setVariable("recipientEmail", recipientEmail);
+            context.setVariable("recipientName", recipientName);
+            context.setVariable("applicationId", applicationId);
+            context.setVariable("serialNumber", serialNumber);
+            context.setVariable("status", status);
+            context.setVariable("statusColor", statusColor);
+            context.setVariable("validFrom", validFrom);
+            context.setVariable("validTo", validTo);
+            context.setVariable("downloadLink", downloadLink);
+
+            String subject = "TDID CA : ดาวน์โหลดใบรับรองอิเล็กทรอนิกส์ – Application ID " + applicationId;
+            String htmlContent = templateEngine.process("email/certificate-download", context);
+
+            // Send with inline logo attachment
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            // Add logo as inline attachment
+            ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
+            helper.addInline("logo", logoResource, "image/png");
+
+            mailSender.send(message);
+            log.info("✅ Certificate download email sent successfully to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.warn("⚠️ Failed to send certificate download email to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
 }
