@@ -354,6 +354,16 @@ public class EmailService {
             ClassPathResource logoResource = new ClassPathResource("static/images/logo_email.png");
             helper.addInline("logo", logoResource, "image/png");
 
+            // Add icon images as inline attachments
+            ClassPathResource computerIconResource = new ClassPathResource("static/images/icons/icon-computer.png");
+            helper.addInline("icon-computer", computerIconResource, "image/png");
+            
+            ClassPathResource etokenIconResource = new ClassPathResource("static/images/icons/icon-etoken.png");
+            helper.addInline("icon-etoken", etokenIconResource, "image/png");
+            
+            ClassPathResource hsmIconResource = new ClassPathResource("static/images/icons/icon-hsm.png");
+            helper.addInline("icon-hsm", hsmIconResource, "image/png");
+
             mailSender.send(message);
             log.info("✅ Certificate download email sent successfully to {}", to);
             return true;

@@ -231,9 +231,9 @@ public class UserController {
         String statusColor = "color: green; font-weight: 600";
 
         // Valid for 1 year from now
-        java.time.LocalDate validFrom = java.time.LocalDate.now();
-        java.time.LocalDate validTo = validFrom.plusYears(1);
-        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy", java.util.Locale.ENGLISH);
+        java.time.LocalDateTime validFrom = java.time.LocalDateTime.now();
+        java.time.LocalDateTime validTo = validFrom.plusYears(1);
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss", java.util.Locale.ENGLISH);
 
         String downloadLink = "https://thaidigitalid.com/e-cert/download/" + applicationId;
 
